@@ -1,0 +1,87 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+</head>
+
+
+<script lang="javascript">
+
+function check()     
+{
+	var name = document.getElementById("name").value;     
+	var pin = document.getElementById("pin").value;
+	if (!confirm("Do you confirm?")) {
+		document.getElementById("name").focus();
+		window.event.returnValue = false;
+		return 0;
+	}
+	if( (name == "Molly") && (pin == "molly") ) {
+		alert("Welcome, Molly.");
+		document.getElementById("name").focus();
+		return 0;
+	}
+	else {
+		alert("name or password is wrong.");
+		document.getElementById("pin").focus();    //this line can be used for focusing your cursor on wherever you want.
+		return 1;
+	}	     
+}    
+
+// rewrite the 'onkeydown' event to make sure 'Enter' key can be used as 'Tab' in some needed circumstances.  It work fine on both IE and non-IE browsers.
+document.onkeydown=function(evt)
+{
+	var isie = (document.all) ? true : false;
+	var key;
+	var srcobj;
+	// if the agent is an IE browser, it's easy to do this.
+	if (isie) {
+		key = event.keyCode;
+		srcobj=event.srcElement;
+	}
+	else {
+		key = evt.which;
+		srcobj=evt.target;
+	} 
+	if(key==13 && srcobj.type!='button' && srcobj.type!='submit' &&srcobj.type!='reset' && srcobj.type!='textarea' && srcobj.type!='') {
+		if(isie)
+			event.keyCode=9;
+		else {
+			var el=getNextElement(evt.target);
+			if (el.type!='hidden')
+				;   //nothing to do here.
+			else
+				while(el.type=='hidden')
+					el=getNextElement(el);
+			if(!el)
+				return false;
+			else
+				el.focus();
+		}
+	}
+}
+
+function getNextElement(field) {
+	var form = field.form;
+	for(var e = 0; e < form.elements.length; e++) {
+		if (field == form.elements[e])
+		break;
+	}
+	return form.elements[++e % form.elements.length];
+}  
+
+</script>
+
+                               
+<body>                                   
+<p><b>This is for Molly.</b></p> 
+<form>
+<table width="20%">
+<input type="hidden" value="name or password is wrong." id="warning" size="100">
+<tr> name:&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" value="Molly" id="name" size="12"> <br> </tr>
+<tr> password: <input type="password" size="12" id="pin"> <br> <tr>
+<tr align="right"> <input type="button" value="Submit" onclick="check()"> </tr>
+<table>
+<form>
+</body>                                    
+                                    
+</html>

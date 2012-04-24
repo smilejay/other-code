@@ -1,0 +1,42 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+</head>
+
+     
+<script lang="javascript">
+
+function check()     
+{
+	var name = document.getElementById("name").value;     
+	var pin = document.getElementById("pin").value;
+	if (!confirm("Do you confirm?")) {
+		document.getElementById("name").focus();
+		window.event.returnValue = false;
+		return;
+	}
+	if( (name == "Molly") && (pin == "molly") ) {
+		alert("Welcome, Molly.");
+		document.getElementById("name").focus();   //this line can be used for focusing your cursor on wherever you want.
+		return 0;
+	}
+	else {
+		alert("name or password is wrong.");
+		document.getElementById("pin").focus();
+		return 1;
+	}	     
+}    
+</script>
+                               
+<body>                                   
+<p><b>This is for Molly.</b></p> 
+<table width="80%">
+<tr onkeydown=if(event.keyCode==13){event.keyCode=9}> name:&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" value="Molly" id="name" size="12"> <br> </tr>
+<tr onkeydown=if(event.keyCode==13){event.keyCode=9}> password: <input type="password" size="12" id="pin"> <br> <tr>
+<tr> <input type="button" value="Submit" onclick="check()"> </br> </tr>
+<tr> "onkeydown=if(event.keyCode==13){event.keyCode=9}" in source code is for 'Enter' key function change" </tr>
+</table>
+</body>                                    
+
+</html>
