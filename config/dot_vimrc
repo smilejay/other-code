@@ -1,0 +1,32 @@
+"please use this config file as ~/.vimrc for VIM editor.
+
+syntax on
+set tabstop=8
+set softtabstop=8
+set shiftwidth=8
+set autoindent
+set cindent
+set hlsearch
+filetype plugin indent on 
+
+
+map <silent> <F9> :TlistToggle<cr> 
+
+
+" add any cscope database in current directory  
+if filereadable("cscope.out")  
+  cs add cscope.out  
+" else add the database pointed to by environment variable   
+elseif $CSCOPE_DB != ""  
+  cs add $CSCOPE_DB  
+endif 
+
+" cscope shortkeys config
+nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR> 
+nmap <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR> 
+nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR> 
+nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR> 
+nmap <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR> 
+nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR> 
+nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR> 
+nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR> 
