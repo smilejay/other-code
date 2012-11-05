@@ -1,0 +1,278 @@
+<script type="text/javascript" src="option-association.js"></script>
+		<form name='frm-xen-x86' id='frm-xen-x86' enctype="multipart/form-data"  method='post'  action="ajax/request_handler.php">
+		<p>
+		<table width=86% >
+		<tr>
+			<td width=12%>
+			Platform Arch:
+			</td>
+			<td width=45%>
+			<input type=hidden value='xen' name=project_name id=project_name >
+			<select name='platform[]' id=platform >
+			<option value="x86_64" selected>IA32e</option>
+			</select> 
+			</td>
+	
+			<td width=12%>
+			Xen tree:
+			</td>
+			<td width=45%>
+				<select name="test_tree" id="test_tree">
+					<option value="xen_unstable">xen-unstable
+					</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td width=12%>
+				Test scenario:
+			</td>
+			<td>
+				<select name="scenario" id="scenario" width="5">
+				<option value="build">build (1.5 hr)
+				<option selected value="xen-abat">abat (2 hr)
+				</option>
+				<option value="xen-vtd">vt-d (2.5 hr)</option>
+				<option value="xen-sriov">sr-iov (2.0 hr)</option>
+				<option value="xen-nightly">nightly (3 hr)</option>
+				<option value="xen-full">full (3.5 hr)
+				</option>
+				</option>
+				<option value="build">----------------------------</option>
+				<option value="kernel-build">g-kbuild (1.5 hr)</option>
+				<option value="xen-perf">performance (24 hr)</option>
+				<option value="xen-stress">stress (2 days)</option>
+				<option value="customize">customization (1.5 hr)</option>
+				<option value="">Do Nothing, Just install the OS (30 min) </option>
+				</select>
+			</td>
+			<td width=12%>
+		    		OS for test box:
+			</td>
+			<td>
+				<select name=test_osd id=test_osd>
+				<option value='rhel6u3'>RHEL6U3</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+                        <td width=12%>                                                     
+                        Customized case:&nbsp;&nbsp;&nbsp;&nbsp;
+                        </td>
+                        <td>
+                        	<input type="text" id="case_name" name="case_name" maxlength="50" size=40 value=''/>
+				(only valid with "customizaztion" option in Scenario.)
+                        </td>
+
+			<td width=12%>
+				OS re-installation:
+			</td>
+			<td>
+				<select name="install_os" id="install_os">
+				<option value="no">no
+				</option>
+				<option selected value="yes">yes
+				</option>
+				</select>
+			</td>
+
+		</tr>
+
+		<tr>
+		<td>
+			Xen hg C/S:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+		</td>
+		<td>
+			<input type="text" name="xen_version" maxlength="50" size=40 onkeyup="value=value.replace(/[^\w\.\/]/ig,'')">
+			(PTS uses the latest changeset/commit by default.)
+		</td>
+	
+		<td width=12%>
+			<font color='red'><b>**</b></font>User email:&nbsp;<font color='red'><b>**</b></font> 
+		</td>
+		<td width=35%>
+			<input type="text" name="user_name" value="<?= 	$_SESSION['user_name'];?>" size=16/><font color="#FF0000" >@intel.com&nbsp;&nbsp;(mandatory, e.g. yongjie.ren)</font></a>&nbsp;<br>
+		</td>
+		</tr>
+
+		<tr>
+		<td width=12%>
+				Dom0 version:&nbsp;&nbsp;&nbsp;&nbsp;
+		</td>
+		<td>
+			<input type="text" name="dom0_version" maxlength="50" size=40 onkeydown="if(event.keyCode==13)event.keyCode=9" onkeyup="value=value.replace(/[^-\w.\/]/g,'')" onpaste="value=value.replace(/[^-\w]/g,'')">
+			(PTS uses the latest commit of linux.git by default.) 
+
+		</td>
+		</tr>
+
+		<tr>
+		<td>
+			Test Box:
+		</td>
+		<td>
+				<select name=test_box id=test_box>
+				<option value='' selected>Auto Scheduling</option>
+				<option value='VT-NHM6'>VT-NHM6</option>
+<!--				<option value='VT-WB8'>VT-WB8 (no sriov)</option>  -->
+				<option value='VT-DP5'>VT-DP5 (no sriov)</option>
+				<option value='VT-SNB6'>VT-SNB6 (no sriov)</option>
+				</select>
+
+		</td>
+		</tr>
+
+		<tr>
+		<td>
+			Test box reservation:
+		</td>
+		<td>
+				<select name=reserve_time id=reserve_time>
+				<option value='' selected>No reservation</option>
+				<option value='2'>2 hours</option>
+				<option value='4'>4 hours</option>
+				<option value='8'>8 hours</option>
+				<option value='12'>12 hours</option>
+				<option value='24'>one day</option>
+				<option value='48'>2 days</option>
+				<option value='96'>4 days</option>
+				<option value='168'>1 week</option>
+				</select>
+(Test box can be reserved for you to debug in the reservation time.)
+		</td>
+		</tr>
+
+
+		<tr>
+		<td>
+			Xen parameters:
+		</td>
+		<td>
+			<input type=text name=xen_params id=xen_params value='dom0_mem=1024M console=com1,115200,8n1 loglvl=all guest_loglvl=all msi=1 iommu=1' size=85>
+		</td>
+		</tr>
+
+		<tr>
+		<td>
+			Dom0 parameters: 
+		</td>
+		<td colspan=4>
+			<input type=text name=dom0_params id=dom0_params value='console=hvc0 pci=assign-busses max_loop=64 debug 3' size=85> 
+			<font color='red'> <br>(Be careful to modify the above 2 rows, test box may panic with wrong boot parameters.) </font>
+			<br>
+		</td>
+		</tr>
+
+		<tr>
+		<td>
+			Image format option:
+		</td>
+		<td colspan=4>
+			<input name="qcow_option" type="radio" checked="checked" value='qcow2'/>Qcow2
+			<input name="qcow_option" type="radio" value='disable'/>Raw
+			<br>
+		</td>
+		</tr>
+
+		</p>
+
+		<tr>
+		<td><font color='red'><b>Upload your patches:</b></font></td>
+		</tr>
+		
+		<tr>
+			<td width=12%>
+				Patch #1 is for
+			</td>
+			<td colspan=3>
+				<select name="patch_on0" id="patch_on0"><option value="xen">xen</option><option value="dom0">dom0</option><option value="ioemu-remote">qemu-xen</option></select>:&nbsp;&nbsp;<input  id="files0" type="file" name='files0' size=80 /><br>
+			</td>
+		</tr>
+
+		<tr>
+			<td width=12%>
+				Patch #2 is for 
+			</td>
+			<td colspan=3>
+				<select name="patch_on1" id="patch_on1"><option value="xen">xen</option><option value="dom0">dom0</option><option value="ioemu-remote">qemu-xen</option></select>:&nbsp;&nbsp;<input name="files1" type="file" size=80 /><br>
+			</td>
+		</tr>
+
+		<tr>
+			<td width=12%>
+				Patch #3 is for 
+			</td>
+			<td colspan=4>
+				<select name="patch_on2" id="patch_on2"><option value="xen">xen</option><option value="dom0">dom0</option><option value="ioemu-remote">qemu-xen</option></select>:&nbsp;&nbsp;<input name="files2" type="file" size=80 /><br>
+			</td>
+		</tr>
+
+		<tr>
+			<td width=12%>
+				Patch #4 is for 
+			</td>
+			<td colspan=3>
+				<select name="patch_on3" id="patch_on3"><option value="xen">xen</option><option value="dom0">dom0</option><option value="ioemu-remote">qemu-xen</option></select>:&nbsp;&nbsp;<input name="files3" type="file" size=80 /><br>
+			</td>
+		</tr>
+		<tr>
+			<td width=12%>
+				Patch #5 is for 
+			</td>
+			<td colspan=3>
+				<select name="patch_on4" id="patch_on4"><option value="xen">xen</option><option value="dom0">dom0</option><option value="ioemu-remote">qemu-xen</option></select>:&nbsp;&nbsp;<input name="files4" type="file" size=80 /><br>
+			</td>
+		</tr>
+
+		<tr>
+			<td width=12%>
+				Patch #6 is for 
+			</td>
+			<td colspan=3>
+				<select name="patch_on5" id="patch_on5"><option value="xen">xen</option><option value="dom0">dom0</option><option value="ioemu-remote">qemu-xen</option></select>:&nbsp;&nbsp;<input name="files5" type="file" size=80 /><br>
+			</td>
+		</tr>
+
+		<tr>
+			<td width=12%>
+				Patch #7 is for 
+			</td>
+			<td colspan=3>
+				<select name="patch_on6" id="patch_on6"><option value="xen">xen</option><option value="dom0">dom0</option><option value="ioemu-remote">qemu-xen</option></select>:&nbsp;&nbsp;<input name="files6" type="file" size=80 /><br>
+			</td>
+		</tr>
+		<tr>
+			<td width=12%>
+				Patch #8 is for 
+			</td>
+			<td colspan=3>
+				<select name="patch_on7" id="patch_on7"><option value="xen">xen</option><option value="dom0">dom0</option><option value="ioemu-remote">qemu-xen</option></select>:&nbsp;&nbsp;<input name="files7" type="file" size=80 /><br>
+			</td>
+		</tr>
+		<tr>
+			<td width=12%>
+				Patch #9 is for 
+			</td>
+			<td colspan=3>
+				<select name="patch_on8" id="patch_on8"><option value="xen">xen</option><option value="dom0">dom0</option><option value="ioemu-remote">qemu-xen</option></select>:&nbsp;&nbsp;<input name="files8" type="file" size=80 /><br>
+			</td>
+		</tr>
+		<tr>
+			<td width=12%>
+				Patch #10 is for 
+			</td>
+			<td colspan=3>
+				<select name="patch_on9" id="patch_on9"><option value="xen">xen</option><option value="dom0">dom0</option><option value="ioemu-remote">qemu-xen</option></select>:&nbsp;&nbsp;<input name="files9" type="file" size=80 /><br>
+			</td>
+		</tr>
+
+		<tr>
+		<td>
+		</td>
+		<td colspan=2 align="center">
+		<input type=submit value='Submit my test now!' name='submit-xen-x86' id='submit-xen-x86' style="width:200;height:30;font-size:12px">
+		</td>
+		</tr>
+		</table>
+		</form>
