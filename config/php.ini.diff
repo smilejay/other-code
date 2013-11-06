@@ -1,0 +1,13 @@
+diff --git a/php.ini b/php.ini
+index 929adf2..0f35aff 100644
+--- a/php.ini
++++ b/php.ini
+@@ -921,7 +921,7 @@ default_socket_timeout = 60
+ ;
+ ; For example
+ ;
+-;   extension=msql.so
++extension=mysql.so
+ ;
+ ; ... or with a path:
+ ;
