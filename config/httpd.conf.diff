@@ -1,0 +1,131 @@
+diff --git a/httpd.conf b/httpd.conf
+index d87a326..1ac8575 100644
+--- a/httpd.conf
++++ b/httpd.conf
+@@ -73,20 +73,20 @@ Timeout 60
+ # KeepAlive: Whether or not to allow persistent connections (more than
+ # one request per connection). Set to "Off" to deactivate.
+ #
+-KeepAlive Off
++KeepAlive On
+ 
+ #
+ # MaxKeepAliveRequests: The maximum number of requests to allow
+ # during a persistent connection. Set to 0 to allow an unlimited amount.
+ # We recommend you leave this number high, for maximum performance.
+ #
+-MaxKeepAliveRequests 100
++MaxKeepAliveRequests 50
+ 
+ #
+ # KeepAliveTimeout: Number of seconds to wait for the next request from the
+ # same client on the same connection.
+ #
+-KeepAliveTimeout 15
++KeepAliveTimeout 30
+ 
+ ##
+ ## Server-Pool Size Regulation (MPM specific)
+@@ -99,13 +99,22 @@ KeepAliveTimeout 15
+ # ServerLimit: maximum value for MaxClients for the lifetime of the server
+ # MaxClients: maximum number of server processes allowed to start
+ # MaxRequestsPerChild: maximum number of requests a server process serves
++#<IfModule prefork.c>
++#StartServers       8
++#MinSpareServers    5
++#MaxSpareServers   20
++#ServerLimit      256
++#MaxClients       256
++#MaxRequestsPerChild  4000
++#</IfModule>
++
+ <IfModule prefork.c>
+-StartServers       8
+-MinSpareServers    5
+-MaxSpareServers   20
+-ServerLimit      256
+-MaxClients       256
+-MaxRequestsPerChild  4000
++StartServers       4
++MinSpareServers    4
++MaxSpareServers    8
++ServerLimit       32
++MaxClients        32
++MaxRequestsPerChild  400
+ </IfModule>
+ 
+ # worker MPM
+@@ -300,8 +309,9 @@ DocumentRoot "/var/www/html"
+ # features.  
+ #
+ <Directory />
+-    Options FollowSymLinks
+-    AllowOverride None
++    #Options FollowSymLinks
++    Options None
++    AllowOverride All
+ </Directory>
+ 
+ #
+@@ -329,13 +339,14 @@ DocumentRoot "/var/www/html"
+ # for more information.
+ #
+     Options Indexes FollowSymLinks
++    #Options Indexes
+ 
+ #
+ # AllowOverride controls what directives may be placed in .htaccess files.
+ # It can be "All", "None", or any combination of the keywords:
+ #   Options FileInfo AuthConfig Limit
+ #
+-    AllowOverride None
++    AllowOverride All
+ 
+ #
+ # Controls who can get stuff from this server.
+@@ -399,7 +410,7 @@ DocumentRoot "/var/www/html"
+ # negotiated documents.  The MultiViews Option can be used for the 
+ # same purpose, but it is much slower.
+ #
+-DirectoryIndex index.html index.html.var
++DirectoryIndex index.php index.html index.html.var
+ 
+ #
+ # AccessFileName: The name of the file to look for in each directory
+@@ -523,7 +534,9 @@ LogFormat "%{User-agent}i" agent
+ # For a single logfile with access, agent, and referer information
+ # (Combined Logfile Format), use the following directive:
+ #
+-CustomLog logs/access_log combined
++#CustomLog logs/access_log combined
++#CustomLog "|/usr/sbin/rotatelogs /var/log/httpd/access_log-%Y%m%d 86400" common 
++CustomLog "|/usr/sbin/rotatelogs /var/log/httpd/access_log-%Y%m%d 86400" common 
+ 
+ #
+ # Optionally add a line containing the server version and virtual host
+@@ -1007,3 +1020,25 @@ BrowserMatch "^Dreamweaver-WebDAV-SCM1" redirect-carefully
+ #    ErrorLog logs/dummy-host.example.com-error_log
+ #    CustomLog logs/dummy-host.example.com-access_log common
+ #</VirtualHost>
++
++
++# Compress everything except images
++<Location />
++	# Insert filter
++	SetOutputFilter DEFLATE
++	
++	# Netscape 4.x has some problems...
++	BrowserMatch ^Mozilla/4 gzip-only-text/html
++	
++	# Netscape 4.06-4.08 have some more problems
++	BrowserMatch ^Mozilla/4\.0[678] no-gzip
++	
++	# MSIE masquerades as Netscape, but it is fine
++	BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
++	# Don't compress images
++	SetEnvIfNoCase Request_URI \
++	\.(?:gif|jpe?g|png)$ no-gzip dont-vary
++	
++	# Make sure proxies don't deliver the wrong content
++	Header append Vary User-Agent env=!dont-vary
++</Location> 
