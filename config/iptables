@@ -1,0 +1,36 @@
+# Firewall configuration written by system-config-firewall
+# Manual customization of this file is not recommended.
+# This the iptables config of my VPS hosting my blog site http://smilejay.com/
+# last update time: 2013-11-28
+*filter
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+-A INPUT -s 139.227.62.104 -j DROP
+-A INPUT -s 121.204.172.17 -j DROP
+-A INPUT -s 175.44.0.0/16 -j DROP
+-A INPUT -s 58.23.89.0/24 -j DROP
+-A INPUT -s 204.12.207.0/24 -j DROP
+-A INPUT -s 192.151.148.0/24 -j DROP
+-A INPUT -s 222.77.192.0/18 -j DROP
+-A INPUT -s 27.159.192.0/18 -j DROP
+-A INPUT -s 27.150.192.0/18 -j DROP
+-A INPUT -s 121.205.224.0/19 -j DROP
+-A INPUT -s 116.5.0.0/18 -j DROP
+-A INPUT -s 112.111.0.0/16 -j DROP
+-A INPUT -s 220.161.0.0/16 -j DROP
+-A INPUT -s 59.58.0.0/16 -j DROP
+-A INPUT -s 175.42.0.0/16 -j DROP
+-A INPUT -s 110.87.0.0/10 -j DROP
+-A INPUT -s 117.30.0.0/12 -j DROP
+-A INPUT -s 120.43.0.0/11 -j DROP
+-A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+-A INPUT -p icmp -j ACCEPT
+-A INPUT -i lo -j ACCEPT
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 80 -j ACCEPT
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 443 -j ACCEPT
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 3306 -j ACCEPT
+-A INPUT -j REJECT --reject-with icmp-host-prohibited
+-A FORWARD -j REJECT --reject-with icmp-host-prohibited
+COMMIT
