@@ -1,0 +1,35 @@
+diff --git a/nginx.conf b/nginx.conf
+index adaeee1..ea39560 100644
+--- a/nginx.conf
++++ b/nginx.conf
+@@ -50,7 +50,8 @@ http {
+ 
+         location / {
+             root   /usr/share/nginx/html;
+-            index  index.html index.htm;
++            index  index.html index.htm index.php;
++	    try_files $uri $uri/ /index.php?q=$uri&$args;
+         }
+ 
+         error_page  404              /404.html;
+@@ -74,13 +75,13 @@ http {
+ 
+         # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+         #
+-        #location ~ \.php$ {
+-        #    root           html;
+-        #    fastcgi_pass   127.0.0.1:9000;
+-        #    fastcgi_index  index.php;
+-        #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+-        #    include        fastcgi_params;
+-        #}
++        location ~ \.php$ {
++            root           html;
++            fastcgi_pass   127.0.0.1:9000;
++            fastcgi_index  index.php;
++            fastcgi_param  SCRIPT_FILENAME  $document_root/$fastcgi_script_name;
++            include        fastcgi_params;
++        }
+ 
+         # deny access to .htaccess files, if Apache's document root
+         # concurs with nginx's one
