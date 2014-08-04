@@ -1,0 +1,29 @@
+diff --git a/nginx.conf b/nginx.conf
+index 8730c99..114d9d8 100644
+--- a/nginx.conf
++++ b/nginx.conf
+@@ -83,10 +83,20 @@ http {
+ #       config_apps_end
+
+           location / {
+-            if ( !-f $request_filename ) {
+-                proxy_pass          http://jboss8080;
+-                 break;
+-            }
++            root   /usr/local/nginx/html;
++            index  index.html index.htm index.cgi index.pl;
++           # if ( !-f $request_filename ) {
++           #     proxy_pass          http://jboss8080;
++           #      break;
++           # }
++        }
++
++        location ~ \.pl|cgi$ {
++            root           html;
++            fastcgi_pass   127.0.0.1:8999;
++            fastcgi_index  index.pl;
++            fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
++            include        fastcgi_params;
+         }
+
+         error_page    500 502 503 504  /50x.html;
