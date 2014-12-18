@@ -1,0 +1,37 @@
+diff --git a/nginx.conf b/nginx.conf
+index ed521ca..933df53 100644
+--- a/nginx.conf
++++ b/nginx.conf
+@@ -42,9 +42,13 @@ http {
+     # for more information.
+     include /etc/nginx/conf.d/*.conf;
+ 
++    upstream cardata_server {
++        server unix:/home/jay/cardata.sock    max_fails=10 fail_timeout=10s;
++    }
++
+     server {
+         listen       80 default_server;
+-        server_name  localhost;
++        server_name  _;
+         root         /usr/share/nginx/html;
+ 
+         #charset koi8-r;
+@@ -54,7 +58,17 @@ http {
+         # Load configuration files for the default server block.
+         include /etc/nginx/default.d/*.conf;
+ 
++        location /static {
++            autoindex on;
++            alias /home/jay/car-data/static;
++            break;
++        }
++
+         location / {
++            if ( !-f $request_filename ) {
++                proxy_pass          http://cardata_server;
++                break;
++            }
+         }
+ 
+         # redirect server error pages to the static page /40x.html
