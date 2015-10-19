@@ -1,0 +1,19 @@
+# my alias here
+alias ll='ls -la'
+
+# my blog site
+alias smilejay='ssh root@192.3.170.172'
+alias proxy7070='screen ssh qa@smilejay.com -f -N -D 7070'
+
+# car data
+alias cardata='ssh jay@120.27.49.100'
+alias cardata_root='ssh root@120.27.49.100'
+
+# git command alias
+alias git-status='git status'
+alias git-diff='git diff'
+alias git-add='git add'
+alias git-pull='git pull'
+alias git-commit='git commit -m'
+alias git-log='git log'
+alias git-push='git push'
