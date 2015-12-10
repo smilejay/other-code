@@ -7,5 +7,6 @@ git://github.com/smilejay/other-code.git
 #       Jay.
 #
 #
-#
-php, html, javascript, ruby, perl, etc.
+===Description===
+This repo contains Jay's config file, php, html, javascript, ruby, perl, etc.
+conf files: vim, kickstart, nginx, apache, php, postfix, vsftpd, iptables, bash alias
