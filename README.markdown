@@ -1,4 +1,4 @@
-# This is the readme file for other-code.git in Jay's git repo hosted on github.com
+## This is the readme file for other-code.git in Jay's git repo hosted on github.com
 [https://github.com/smilejay/other-code.git](https://github.com/smilejay/other-code.git)
 git://github.com/smilejay/other-code.git
 
