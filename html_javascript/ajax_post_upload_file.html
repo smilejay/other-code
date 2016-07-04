@@ -1,0 +1,33 @@
+<form id="data" method="post" enctype="multipart/form-data">
+    <input type="text" name="key" value="123456" />
+    <input name="file" type="file" />
+    <button>Submit</button>
+</form>
+
+<script
+    src="http://code.jquery.com/jquery-3.0.0.min.js"
+    integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0="
+    crossorigin="anonymous">
+</script>
+
+<script>
+$("form#data").submit(function(){
+
+    var formData = new FormData($(this)[0]);
+
+    $.ajax({
+        url: '/api/detect_face/',
+        type: 'POST',
+        data: formData,
+        async: false,
+        success: function (data) {
+            alert(JSON.stringify(data));
+        },
+        cache: false,
+        contentType: false,
+        processData: false
+    });
+
+    return false;
+});
+</script>
