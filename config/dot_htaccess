@@ -1,0 +1,27 @@
+# BEGIN WordPress
+AddEncoding gzip .jgz
+AddType "text/javascript;charset=UTF-8" .jgz
+
+AddEncoding gzip .zcss
+AddType "text/css;charset=UTF-8" .zcss
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+
+#Order Allow,Deny
+## Deny from some subnets
+#Deny from 27.153 175.42 175.44 112.111 218.6 120.40 120.33 110.84
+#
+#Deny from 27.153.128.68 117.26.73.89 58.22.74.52 36.248.160.186
+#Deny from 58.23.89.140 27.153.185.168
+#Allow from all
+
+Options -Indexes
+
+# END WordPress
