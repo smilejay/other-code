@@ -1,12 +1,16 @@
-===配置文件介绍===
+## VIM配置文件介绍
 我常用的VIM配置文件，最初是自己收集各种vimrc的配置方法和零散地安装一些plugin，后来用了spf13等项目自动配置后，觉得真的效率高了很多。
+* 主要看配置文件：$HOME/.vimrc （或全局配置：/etc/vimrc）
 
-===推荐VIM配置的开源项目===
+## 推荐VIM配置的开源项目
+2024.03.17 update： 以前推荐的多年无人维护了，推荐这个，https://github.com/amix/vimrc
+
 spf13 这个不错，强烈推荐：https://github.com/spf13/spf13-vim   (Linux/MacOSX/Unix等上使用很方便；在Windows上也能用，配置稍麻烦）
-另外，在MacOSX上，我也常用maximum-awesome项目：https://github.com/square/maximum-awesome  (仅支持Mac，该配置写ruby很爽，写python也不错）
 
-===VIM源码编译===
-在CentOS 5.7 上编译了最新的vim 7.4：
+另外，在MacOSX上，我也常用maximum-awesome项目：https://github.com/square/maximum-awesome  (仅支持Mac，写python也不错）
+
+## VIM源码编译
+我曾经在CentOS 5.7 上编译了最新的vim 7.4，记录一下过程：
 1. 下载源码：
 vim官网的tarball下载超级慢或下载失败 http://www.vim.org/
 可以选个镜像下载如：https://ftp.heanet.ie/mirrors/ftp.vim.org/pub/vim/unix/
