@@ -10,15 +10,15 @@ header("Content-Type: text/html; charset=utf-8");
  */
 function diffBetweenTwoDays ($day1, $day2)
 {
-  $second1 = strtotime($day1);
-  $second2 = strtotime($day2);
+    $second1 = strtotime($day1);
+    $second2 = strtotime($day2);
 
-if ($second1 < $second2) {
-$tmp = $second2;
-$second2 = $second1;
-$second1 = $tmp;
-}
-return ($second1 - $second2) / 86400;
+    if ($second1 < $second2) {
+    $tmp = $second2;
+    $second2 = $second1;
+    $second1 = $tmp;
+    }
+    return ($second1 - $second2) / 86400;
 }
 
 $date0 = "2017-01-20";
@@ -29,6 +29,13 @@ $total_money = diffBetweenTwoDays($date0, $date1) * $money_per_day;
 $remain_money = diffBetweenTwoDays($date_now, $date1) * $money_per_day;
 $delta_money = diffBetweenTwoDays($date0, $date_now) * $money_per_day;
 
+$date0 = "2017-11-15";
+$date1 = "2021-07-04";
+$days_needed = 2*25*365.25;
+$days = diffBetweenTwoDays($date_now, $date0) + diffBetweenTwoDays($date_now, $date1);
+$ratio = (float)$days / $days_needed;
+
+
 echo "
 <style>
 .font_size {font-size: 30px}
@@ -38,5 +45,7 @@ echo "<div class='font_size'>";
 echo "今天是 <b>$date_now</b><br>";
 echo "还需养老钱 <b>" . number_format($remain_money) . "</b> 元<br/>";
 echo "如果自备50年养老钱 每天500元; 共计 <b>" . number_format($total_money) . "</b> 元<br />";
+echo "<br />";
+echo "当前养娃进度 <b>" . number_format($ratio*100, 2) . "%</b> <br />";
 echo "</div>";
 ?>
